@@ -154,7 +154,7 @@ void DebugClass::notice(const char* fmt, ...) {
   if (debug) {
     Serial.printf("[%s] : %s \r\n", TAG, buf);
   } else {
-    ESP_LOGA(TAG, "%s", buf);
+    ESP_LOGN(TAG, "%s", buf);
   }
   remote_log(PT_NOTICE, LOG_COLOR(LOG_COLOR_MAGENTA), buf);
 }
@@ -169,7 +169,7 @@ void DebugClass::notice(const __FlashStringHelper* fmt, ...) {
   if (debug) {
     Serial.printf("[%s] : %s \r\n", TAG, buf);
   } else {
-    ESP_LOGA(TAG, "%s", buf);
+    ESP_LOGN(TAG, "%s", buf);
   }
   remote_log(PT_NOTICE, LOG_COLOR(LOG_COLOR_MAGENTA), buf);
 }
