@@ -9,6 +9,7 @@
 #undef log_w
 #undef log_i
 #undef log_d
+#undef log_n
 #undef LOG_FORMAT
 #undef LOG_BOLD
 #undef LOG_COLOR_V
