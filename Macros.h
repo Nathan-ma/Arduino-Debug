@@ -42,14 +42,13 @@
 #define LOG_COLOR_W LOG_COLOR(LOG_COLOR_YELLOW)
 #define LOG_COLOR_I LOG_COLOR(LOG_COLOR_GREEN)
 #define LOG_COLOR_D LOG_COLOR(LOG_COLOR_CYAN)
-#define LOG_COLOR_V LOG_COLOR(LOG_COLOR_GRAY)
-#define LOG_COLOR_M LOG_COLOR(LOG_COLOR_MAGENTA)
+#define LOG_COLOR_N LOG_COLOR(LOG_COLOR_MAGENTA)
 #else
 #define LOG_COLOR_E
 #define LOG_COLOR_W
 #define LOG_COLOR_I
 #define LOG_COLOR_D
-#define LOG_COLOR_V
+#define LOG_COLOR_N
 #define LOG_RESET_COLOR
 #endif
 
@@ -58,13 +57,13 @@
 
 #if LOG_LEVEL >= LOG_LEVEL_DEBUG
 #define log_d(tag, format, ...) printf(LOG_N_FORMAT(tag, D, format), ##__VA_ARGS__)
-#define log_memory(tag, format, ...) printf(LOG_N_FORMAT(tag, M, format), ##__VA_ARGS__)
 #else
 #define log_d(tag, format, ...)
 #endif
 
 #if LOG_LEVEL >= LOG_LEVEL_INFO
 #define log_i(tag, format, ...) printf(LOG_N_FORMAT(tag, I, format), ##__VA_ARGS__)
+#define log_n(tag, format, ...) printf(LOG_N_FORMAT(tag, N, format), ##__VA_ARGS__)
 #else
 #define log_i(tag, format, ...)
 #endif
@@ -86,11 +85,13 @@
 #define ESP_LOGW(tag, ...) 
 #define ESP_LOGI(tag, ...) 
 #define ESP_LOGD(tag, ...) 
+#define ESP_LOGN(tag, ...)
 #else
 #define ESP_LOGI(tag, ...) log_i(tag, __VA_ARGS__)
 #define ESP_LOGW(tag, ...) log_w(tag, __VA_ARGS__)
 #define ESP_LOGE(tag, ...) log_e(tag, __VA_ARGS__)
 #define ESP_LOGD(tag, ...) log_d(tag, __VA_ARGS__)
+#define ESP_LOGN(tag, ...) log_n(tag, __VA_ARGS__)
 #endif
 
 #endif
