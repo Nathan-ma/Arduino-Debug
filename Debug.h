@@ -5,11 +5,9 @@
 
 #include "Macros.h"
 
-#ifdef PAPER_TRAIL
 #include <WiFi.h>
 #include <WiFiUdp.h>
 const int FacilityCode = 16;
-#endif
 
 #ifndef PRINT_DEBUG
 #define PRINT_DEBUG true
