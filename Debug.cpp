@@ -1,5 +1,9 @@
 #include <Debug.h>
 
+const char*  DebugClass::address = "";
+uint32_t DebugClass::port = 0;
+const char*  DebugClass::systemName = "";
+
 /** @brief Debug Print */
 void DebugClass::print(const char* fmt, ...) {
   char buf[DEBUG_BUFFER_SIZE];
