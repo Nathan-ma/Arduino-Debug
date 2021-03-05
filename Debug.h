@@ -33,13 +33,14 @@ class DebugClass {
   static const char* address;
   static uint32_t port;
   static const char* systemName;
-  WiFiUDP wifiUDP;
+  
 
   /* Methods */
   void remote_log(papertrail_log_level_t level, String color, char* msg) {
     if (WiFi.status() != WL_CONNECTED || (address && !address[0])) {
       return;
     }
+    WiFiUDP wifiUDP;
 
     wifiUDP.beginPacket(address, port);
     String syslogMessage = "<" + String(FacilityCode * 8 + level) + ">1 - " + systemName + " " + TAG + " - - - " + color + String((const char*)msg);
