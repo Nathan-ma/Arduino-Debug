@@ -4,8 +4,12 @@
 #include <Arduino.h>
 
 #include "Macros.h"
-
+#if defined(ESP32)
 #include <WiFi.h>
+#elif defined(ESP8266)
+#include <ESP8266WiFi.h>
+#endif
+
 #include <WiFiUdp.h>
 const int FacilityCode = 16;
 
