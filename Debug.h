@@ -36,7 +36,7 @@ class DebugClass {
   char const* TAG;
   static const char* address;
   static uint32_t port;
-  static const char* systemName;
+  static String systemName;
   
 
   /* Methods */
@@ -60,7 +60,7 @@ class DebugClass {
     port = _port_;
   }
 
-  void setSystemName(const char* name) {
+  void setSystemName(const String& name) {
     systemName = name;
   }
 
