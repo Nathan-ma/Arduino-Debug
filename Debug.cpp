@@ -2,7 +2,7 @@
 
 const char*  DebugClass::address = "";
 uint32_t DebugClass::port = 0;
-const char*  DebugClass::systemName = "";
+String  DebugClass::systemName = "";
 
 /** @brief Debug Print */
 void DebugClass::print(const char* fmt, ...) {
