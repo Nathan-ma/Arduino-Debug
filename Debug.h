@@ -11,14 +11,11 @@
 #endif
 
 #include <WiFiUdp.h>
+
 const int FacilityCode = 16;
 
 #ifndef PRINT_DEBUG
 #define PRINT_DEBUG true
-#endif
-
-#ifndef DEBUG_BUFFER_SIZE
-#define DEBUG_BUFFER_SIZE 1024
 #endif
 
 typedef enum {
@@ -37,7 +34,6 @@ class DebugClass {
   static const char* address;
   static uint32_t port;
   static String systemName;
-  
 
   /* Methods */
   void remote_log(papertrail_log_level_t level, String color, char* msg) {
