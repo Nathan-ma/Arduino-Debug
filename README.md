@@ -1,4 +1,5 @@
 #  Arduino Debuger
-
 ## Version: v0.0.3
-> - Size reduced to work with FreeRTOS timers
+ - Rework on Macros lib
+ - Adding remote_log_settings to control what goes to remote.
+

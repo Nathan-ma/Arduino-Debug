@@ -2,6 +2,8 @@
 #define DEBUG_H
 
 #include <Arduino.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 #include "Macros.h"
 #if defined(ESP32)
@@ -10,12 +12,14 @@
 #include <ESP8266WiFi.h>
 #endif
 
+#if defined(ESP32) || defined(ESP8266)
 #include <WiFiUdp.h>
+#endif
 
 const int FacilityCode = 16;
 
 #ifndef PRINT_DEBUG
-#define PRINT_DEBUG true
+#define PRINT_DEBUG false
 #endif
 
 typedef enum {
@@ -26,6 +30,10 @@ typedef enum {
   PT_DETAIL = 7
 } papertrail_log_level_t;
 
+struct remote_log_settings_t {
+  bool print, warn, error, detail;
+};
+
 class DebugClass {
  private:
   /* Variables */
@@ -34,8 +42,10 @@ class DebugClass {
   static const char* address;
   static uint32_t port;
   static String systemName;
+  static remote_log_settings_t Settings;
 
-  /* Methods */
+/* Methods */
+#if defined(ESP32) || defined(ESP8266)
   void remote_log(papertrail_log_level_t level, String color, char* msg) {
     if (WiFi.status() != WL_CONNECTED || (address && !address[0])) {
       return;
@@ -47,6 +57,7 @@ class DebugClass {
     wifiUDP.write((const uint8_t*)syslogMessage.c_str(), syslogMessage.length());
     wifiUDP.endPacket();
   }
+#endif
 
  public:
   /* Static */
@@ -60,6 +71,10 @@ class DebugClass {
     systemName = name;
   }
 
+  void setRemoteSettings(remote_log_settings_t& _Settings) {
+    Settings = _Settings;
+  }
+  /* Constructor */
   /** @brief Class Constructor */
   DebugClass(const char* ClassTag) : TAG(ClassTag){};
 

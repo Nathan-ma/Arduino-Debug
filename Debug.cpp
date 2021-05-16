@@ -1,8 +1,11 @@
-#include <Debug.h>
+#include "Debug.h"
 
 const char* DebugClass::address = "";
 uint32_t DebugClass::port = 0;
 String DebugClass::systemName = "";
+remote_log_settings_t DebugClass::Settings = {
+  .print = false, .warn = false, .error = false, .detail = false
+};
 
 /** @brief Debug Print */
 void DebugClass::print(const char* fmt, ...) {
@@ -12,7 +15,7 @@ void DebugClass::print(const char* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -31,10 +34,11 @@ void DebugClass::print(const char* fmt, ...) {
   if (debug) {
     Serial.printf("[%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGI(TAG, "%s", temp);
+    LOG_INFO(TAG, "%s", temp);
   }
-#ifdef PAPER_TRAIL
-  remote_log(PT_PRINT, LOG_COLOR(LOG_COLOR_GREEN), temp);
+#if defined(ESP32) || defined(ESP8266)
+  if(Settings.print)
+    remote_log(PT_PRINT, LOG_COLOR_NORMAL(COLOR_GREEN), temp);
 #endif
 }
 
@@ -46,7 +50,7 @@ void DebugClass::print(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -65,10 +69,11 @@ void DebugClass::print(const __FlashStringHelper* fmt, ...) {
   if (debug) {
     Serial.printf("[%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGI(TAG, "%s", temp);
+    LOG_INFO(TAG, "%s", temp);
   }
-#ifdef PAPER_TRAIL
-  remote_log(PT_PRINT, LOG_COLOR(LOG_COLOR_GREEN), temp);
+#if defined(ESP32) || defined(ESP8266)
+  if(Settings.print)
+    remote_log(PT_PRINT, LOG_COLOR_NORMAL(COLOR_GREEN), temp);
 #endif
 }
 
@@ -80,7 +85,7 @@ void DebugClass::error(const char* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -99,10 +104,11 @@ void DebugClass::error(const char* fmt, ...) {
   if (debug) {
     Serial.printf("[ERR][%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGE(TAG, "%s", temp);
+    LOG_ERRO(TAG, "%s", temp);
   }
-#ifdef PAPER_TRAIL
-  remote_log(PT_ERROR, LOG_COLOR(LOG_COLOR_RED), temp);
+#if defined(ESP32) || defined(ESP8266)
+  if(Settings.error)
+    remote_log(PT_ERROR, LOG_COLOR_NORMAL(COLOR_RED), temp);
 #endif
 }
 
@@ -114,7 +120,7 @@ void DebugClass::error(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -133,10 +139,11 @@ void DebugClass::error(const __FlashStringHelper* fmt, ...) {
   if (debug) {
     Serial.printf("[ERR][%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGE(TAG, "%s", temp);
+    LOG_ERRO(TAG, "%s", temp);
   }
-#ifdef PAPER_TRAIL
-  remote_log(PT_ERROR, LOG_COLOR(LOG_COLOR_RED), temp);
+#if defined(ESP32) || defined(ESP8266)
+  if(Settings.error)
+    remote_log(PT_ERROR, LOG_COLOR_NORMAL(COLOR_RED), temp);
 #endif
 }
 
@@ -148,7 +155,7 @@ void DebugClass::warn(const char* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -167,10 +174,11 @@ void DebugClass::warn(const char* fmt, ...) {
   if (debug) {
     Serial.printf("[WARN][%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGW(TAG, "%s", temp);
+    LOG_WARN(TAG, "%s", temp);
   }
-#ifdef PAPER_TRAIL
-  remote_log(PT_WARNING, LOG_COLOR(LOG_COLOR_YELLOW), temp);
+#if defined(ESP32) || defined(ESP8266)
+  if(Settings.warn)
+    remote_log(PT_WARNING, LOG_COLOR_NORMAL(COLOR_YELLOW), temp);
 #endif
 }
 
@@ -182,7 +190,7 @@ void DebugClass::warn(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -201,10 +209,11 @@ void DebugClass::warn(const __FlashStringHelper* fmt, ...) {
   if (debug) {
     Serial.printf("[WARN][%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGW(TAG, "%s", temp);
+    LOG_WARN(TAG, "%s", temp);
   }
-#ifdef PAPER_TRAIL
-  remote_log(PT_WARNING, LOG_COLOR(LOG_COLOR_YELLOW), temp);
+#if defined(ESP32) || defined(ESP8266)
+  if(Settings.warn)
+  remote_log(PT_WARNING, LOG_COLOR_NORMAL(COLOR_YELLOW), temp);
 #endif
 }
 
@@ -216,7 +225,7 @@ void DebugClass::detail(const char* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -235,10 +244,11 @@ void DebugClass::detail(const char* fmt, ...) {
   if (debug) {
     Serial.printf("[WARN][%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGD(TAG, "%s", temp);
+    LOG_DEBG(TAG, "%s", temp);
   }
-#ifdef PAPER_TRAIL
-  remote_log(PT_DETAIL, LOG_COLOR(LOG_COLOR_CYAN), temp);
+#if defined(ESP32) || defined(ESP8266)
+  if(Settings.detail)
+    remote_log(PT_DETAIL, LOG_COLOR_NORMAL(COLOR_CYAN), temp);
 #endif
 }
 
@@ -250,7 +260,7 @@ void DebugClass::detail(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -269,10 +279,11 @@ void DebugClass::detail(const __FlashStringHelper* fmt, ...) {
   if (debug) {
     Serial.printf("[WARN][%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGD(TAG, "%s", temp);
+    LOG_DEBG(TAG, "%s", temp);
   }
-#ifdef PAPER_TRAIL
-  remote_log(PT_DETAIL, LOG_COLOR(LOG_COLOR_CYAN), temp);
+#if defined(ESP32) || defined(ESP8266)
+  if(Settings.detail)
+    remote_log(PT_DETAIL, LOG_COLOR_NORMAL(COLOR_CYAN), temp);
 #endif
 }
 
@@ -283,7 +294,7 @@ void DebugClass::notice(const char* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), fmt, copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -302,10 +313,12 @@ void DebugClass::notice(const char* fmt, ...) {
   if (debug) {
     Serial.printf("[%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGN(TAG, "%s", temp);
+    LOG_NOTC(TAG, "%s", temp);
   }
 
-  remote_log(PT_NOTICE, LOG_COLOR(LOG_COLOR_MAGENTA), temp);
+  #if defined(ESP32) || defined(ESP8266)
+  remote_log(PT_NOTICE, LOG_COLOR_NORMAL(COLOR_MAGENTA), temp);
+  #endif
 }
 
 void DebugClass::notice(const __FlashStringHelper* fmt, ...) {
@@ -315,7 +328,7 @@ void DebugClass::notice(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  int len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -334,7 +347,10 @@ void DebugClass::notice(const __FlashStringHelper* fmt, ...) {
   if (debug) {
     Serial.printf("[%s] : %s \r\n", TAG, temp);
   } else {
-    ESP_LOGN(TAG, "%s", temp);
+    LOG_NOTC(TAG, "%s", temp);
   }
-  remote_log(PT_NOTICE, LOG_COLOR(LOG_COLOR_MAGENTA), temp);
+
+  #if defined(ESP32) || defined(ESP8266)
+  remote_log(PT_NOTICE, LOG_COLOR_NORMAL(COLOR_MAGENTA), temp);
+  #endif
 }
