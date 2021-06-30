@@ -4,8 +4,7 @@ const char* DebugClass::address = "";
 uint32_t DebugClass::port = 0;
 String DebugClass::systemName = "";
 remote_log_settings_t DebugClass::Settings = {
-  .print = false, .warn = false, .error = false, .detail = false
-};
+    .print = false, .warn = false, .error = false, .detail = false};
 
 /** @brief Debug Print */
 void DebugClass::print(const char* fmt, ...) {
@@ -37,9 +36,11 @@ void DebugClass::print(const char* fmt, ...) {
     LOG_INFO(TAG, "%s", temp);
   }
 #if defined(ESP32) || defined(ESP8266)
-  if(Settings.print)
+  if (Settings.print)
     remote_log(PT_PRINT, LOG_COLOR_NORMAL(COLOR_GREEN), temp);
 #endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
 
 /** @brief Debug Override*/
@@ -50,7 +51,7 @@ void DebugClass::print(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char*>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -62,7 +63,7 @@ void DebugClass::print(const __FlashStringHelper* fmt, ...) {
       va_end(arg);
       return;
     }
-    len = vsnprintf(temp, len + 1, reinterpret_cast<const char *>(fmt), arg);
+    len = vsnprintf(temp, len + 1, reinterpret_cast<const char*>(fmt), arg);
   }
   va_end(arg);
 
@@ -72,9 +73,11 @@ void DebugClass::print(const __FlashStringHelper* fmt, ...) {
     LOG_INFO(TAG, "%s", temp);
   }
 #if defined(ESP32) || defined(ESP8266)
-  if(Settings.print)
+  if (Settings.print)
     remote_log(PT_PRINT, LOG_COLOR_NORMAL(COLOR_GREEN), temp);
 #endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
 
 /** @brief Error Print*/
@@ -107,9 +110,11 @@ void DebugClass::error(const char* fmt, ...) {
     LOG_ERRO(TAG, "%s", temp);
   }
 #if defined(ESP32) || defined(ESP8266)
-  if(Settings.error)
+  if (Settings.error)
     remote_log(PT_ERROR, LOG_COLOR_NORMAL(COLOR_RED), temp);
 #endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
 
 /** @brief Error Override*/
@@ -120,7 +125,7 @@ void DebugClass::error(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char*>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -132,7 +137,7 @@ void DebugClass::error(const __FlashStringHelper* fmt, ...) {
       va_end(arg);
       return;
     }
-    len = vsnprintf(temp, len + 1, reinterpret_cast<const char *>(fmt), arg);
+    len = vsnprintf(temp, len + 1, reinterpret_cast<const char*>(fmt), arg);
   }
   va_end(arg);
 
@@ -142,9 +147,11 @@ void DebugClass::error(const __FlashStringHelper* fmt, ...) {
     LOG_ERRO(TAG, "%s", temp);
   }
 #if defined(ESP32) || defined(ESP8266)
-  if(Settings.error)
+  if (Settings.error)
     remote_log(PT_ERROR, LOG_COLOR_NORMAL(COLOR_RED), temp);
 #endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
 
 /** @brief Warn Print*/
@@ -177,9 +184,11 @@ void DebugClass::warn(const char* fmt, ...) {
     LOG_WARN(TAG, "%s", temp);
   }
 #if defined(ESP32) || defined(ESP8266)
-  if(Settings.warn)
+  if (Settings.warn)
     remote_log(PT_WARNING, LOG_COLOR_NORMAL(COLOR_YELLOW), temp);
 #endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
 
 /** @brief Warn Override*/
@@ -190,7 +199,7 @@ void DebugClass::warn(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char*>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -202,7 +211,7 @@ void DebugClass::warn(const __FlashStringHelper* fmt, ...) {
       va_end(arg);
       return;
     }
-    len = vsnprintf(temp, len + 1, reinterpret_cast<const char *>(fmt), arg);
+    len = vsnprintf(temp, len + 1, reinterpret_cast<const char*>(fmt), arg);
   }
   va_end(arg);
 
@@ -212,9 +221,11 @@ void DebugClass::warn(const __FlashStringHelper* fmt, ...) {
     LOG_WARN(TAG, "%s", temp);
   }
 #if defined(ESP32) || defined(ESP8266)
-  if(Settings.warn)
-  remote_log(PT_WARNING, LOG_COLOR_NORMAL(COLOR_YELLOW), temp);
+  if (Settings.warn)
+    remote_log(PT_WARNING, LOG_COLOR_NORMAL(COLOR_YELLOW), temp);
 #endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
 
 /** @brief Warn Print*/
@@ -247,9 +258,11 @@ void DebugClass::detail(const char* fmt, ...) {
     LOG_DEBG(TAG, "%s", temp);
   }
 #if defined(ESP32) || defined(ESP8266)
-  if(Settings.detail)
+  if (Settings.detail)
     remote_log(PT_DETAIL, LOG_COLOR_NORMAL(COLOR_CYAN), temp);
 #endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
 
 /** @brief Warn Override*/
@@ -260,7 +273,7 @@ void DebugClass::detail(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char*>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -272,7 +285,7 @@ void DebugClass::detail(const __FlashStringHelper* fmt, ...) {
       va_end(arg);
       return;
     }
-    len = vsnprintf(temp, len + 1, reinterpret_cast<const char *>(fmt), arg);
+    len = vsnprintf(temp, len + 1, reinterpret_cast<const char*>(fmt), arg);
   }
   va_end(arg);
 
@@ -282,9 +295,11 @@ void DebugClass::detail(const __FlashStringHelper* fmt, ...) {
     LOG_DEBG(TAG, "%s", temp);
   }
 #if defined(ESP32) || defined(ESP8266)
-  if(Settings.detail)
+  if (Settings.detail)
     remote_log(PT_DETAIL, LOG_COLOR_NORMAL(COLOR_CYAN), temp);
 #endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
 
 void DebugClass::notice(const char* fmt, ...) {
@@ -316,9 +331,11 @@ void DebugClass::notice(const char* fmt, ...) {
     LOG_NOTC(TAG, "%s", temp);
   }
 
-  #if defined(ESP32) || defined(ESP8266)
+#if defined(ESP32) || defined(ESP8266)
   remote_log(PT_NOTICE, LOG_COLOR_NORMAL(COLOR_MAGENTA), temp);
-  #endif
+#endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
 
 void DebugClass::notice(const __FlashStringHelper* fmt, ...) {
@@ -328,7 +345,7 @@ void DebugClass::notice(const __FlashStringHelper* fmt, ...) {
   va_list copy;
   va_start(arg, fmt);
   va_copy(copy, arg);
-  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char *>(fmt), copy);
+  size_t len = vsnprintf(temp, sizeof(loc_buf), reinterpret_cast<const char*>(fmt), copy);
   va_end(copy);
   if (len < 0) {
     va_end(arg);
@@ -340,7 +357,7 @@ void DebugClass::notice(const __FlashStringHelper* fmt, ...) {
       va_end(arg);
       return;
     }
-    len = vsnprintf(temp, len + 1, reinterpret_cast<const char *>(fmt), arg);
+    len = vsnprintf(temp, len + 1, reinterpret_cast<const char*>(fmt), arg);
   }
   va_end(arg);
 
@@ -350,7 +367,9 @@ void DebugClass::notice(const __FlashStringHelper* fmt, ...) {
     LOG_NOTC(TAG, "%s", temp);
   }
 
-  #if defined(ESP32) || defined(ESP8266)
+#if defined(ESP32) || defined(ESP8266)
   remote_log(PT_NOTICE, LOG_COLOR_NORMAL(COLOR_MAGENTA), temp);
-  #endif
+#endif
+  if (len >= sizeof(loc_buf))
+    free(temp);
 }
