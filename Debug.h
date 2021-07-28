@@ -43,11 +43,12 @@ class DebugClass {
   static uint32_t port;
   static String systemName;
   static remote_log_settings_t Settings;
+  static bool activate;
 
 /* Methods */
 #if defined(ESP32) || defined(ESP8266)
   void remote_log(papertrail_log_level_t level, String color, char* msg) {
-    if (WiFi.status() != WL_CONNECTED || (address && !address[0])) {
+    if (WiFi.status() != WL_CONNECTED || (address && !address[0]) || !activate) {
       return;
     }
     WiFiUDP wifiUDP;
@@ -74,6 +75,9 @@ class DebugClass {
   void setRemoteSettings(remote_log_settings_t& _Settings) {
     Settings = _Settings;
   }
+
+  void setActivate(bool status) {activate = status;}
+
   /* Constructor */
   /** @brief Class Constructor */
   DebugClass(const char* ClassTag) : TAG(ClassTag){};
