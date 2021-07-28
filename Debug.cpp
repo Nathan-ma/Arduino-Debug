@@ -2,6 +2,7 @@
 
 const char* DebugClass::address = "";
 uint32_t DebugClass::port = 0;
+bool DebugClass::activate = true;
 String DebugClass::systemName = "";
 remote_log_settings_t DebugClass::Settings = {
     .print = false, .warn = false, .error = false, .detail = false};
