@@ -53,7 +53,7 @@ class DebugClass {
     }
     WiFiUDP wifiUDP;
 
-    wifiUDP.beginPacket(address, port);
+    if(!wifiUDP.beginPacket(address, port)) return;
     String syslogMessage = "<" + String(FacilityCode * 8 + level) + ">1 - " + systemName + " " + TAG + " - - - " + color + String((const char*)msg);
     wifiUDP.write((const uint8_t*)syslogMessage.c_str(), syslogMessage.length());
     wifiUDP.endPacket();
