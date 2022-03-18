@@ -32,7 +32,11 @@ void DebugClass::print(const char* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_INFO(TAG, "%s", temp);
   }
@@ -69,7 +73,11 @@ void DebugClass::print(const __FlashStringHelper* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_INFO(TAG, "%s", temp);
   }
@@ -106,7 +114,11 @@ void DebugClass::error(const char* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[ERR][%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_ERRO(TAG, "%s", temp);
   }
@@ -143,7 +155,11 @@ void DebugClass::error(const __FlashStringHelper* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[ERR][%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_ERRO(TAG, "%s", temp);
   }
@@ -180,7 +196,11 @@ void DebugClass::warn(const char* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[WARN][%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_WARN(TAG, "%s", temp);
   }
@@ -217,7 +237,11 @@ void DebugClass::warn(const __FlashStringHelper* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[WARN][%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_WARN(TAG, "%s", temp);
   }
@@ -254,7 +278,11 @@ void DebugClass::detail(const char* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[WARN][%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_DEBG(TAG, "%s", temp);
   }
@@ -291,7 +319,11 @@ void DebugClass::detail(const __FlashStringHelper* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[WARN][%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_DEBG(TAG, "%s", temp);
   }
@@ -327,7 +359,11 @@ void DebugClass::notice(const char* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_NOTC(TAG, "%s", temp);
   }
@@ -363,7 +399,11 @@ void DebugClass::notice(const __FlashStringHelper* fmt, ...) {
   va_end(arg);
 
   if (debug) {
+#if defined(__AVR__)
+    Serial.println(temp);
+#else
     Serial.printf("[%s] : %s \r\n", TAG, temp);
+#endif
   } else {
     LOG_NOTC(TAG, "%s", temp);
   }
