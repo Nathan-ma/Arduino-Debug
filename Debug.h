@@ -52,8 +52,9 @@ class DebugClass {
       return;
     }
     WiFiUDP wifiUDP;
-
-    if(!wifiUDP.beginPacket(address, port)) return;
+    IPAddress addr;
+    if (WiFi.hostByName(address, addr) != 1) return;
+    if(!wifiUDP.beginPacket(addr, port)) return;
     String syslogMessage = "<" + String(FacilityCode * 8 + level) + ">1 - " + systemName + " " + TAG + " - - - " + color + String((const char*)msg);
     wifiUDP.write((const uint8_t*)syslogMessage.c_str(), syslogMessage.length());
     wifiUDP.endPacket();
@@ -83,15 +84,15 @@ class DebugClass {
   DebugClass(const char* ClassTag) : TAG(ClassTag){};
 
   /** @brief Debug Print */
-  void print(const char* fmt, ...);
+  bool print(const char* fmt, ...);
 
   /** @brief Debug Override*/
-  void print(const __FlashStringHelper* fmt, ...);
+  bool print(const __FlashStringHelper* fmt, ...);
 
   /** @brief Error Print*/
-  void error(const char* fmt, ...);
+  bool error(const char* fmt, ...);
   /** @brief Error Override*/
-  void error(const __FlashStringHelper* fmt, ...);
+  bool error(const __FlashStringHelper* fmt, ...);
 
   /** @brief Warn Print*/
   void warn(const char* fmt, ...);

@@ -9,13 +9,13 @@
 #define LOG_LEVEL_VERBOSE (5)
 
 #define COLOR_BLACK     "30"
-#define COLOR_RED       "31"   
-#define COLOR_GREEN     "32" 
+#define COLOR_RED       "31"
+#define COLOR_GREEN     "32"
 #define COLOR_YELLOW    "33"
 #define COLOR_BLUE      "34"
 #define COLOR_MAGENTA   "35"
-#define COLOR_CYAN      "36"  
-#define COLOR_GRAY      "37"  
+#define COLOR_CYAN      "36"
+#define COLOR_GRAY      "37"
 #define COLOR_WHITE     "38"
 
 #define LOG_COLOR_NORMAL(COLOR) "\x1b[0;" COLOR "m"
@@ -23,12 +23,20 @@
 #define RESET_COLOR "\x1b[0m"
 
 #if CONFIG_LOG_COLORS
-#define LOG_COLOR_ERRO LOG_COLOR_BOLD(COLOR_RED)
-#define LOG_COLOR_WARN LOG_COLOR_BOLD(COLOR_YELLOW)
-#define LOG_COLOR_INFO LOG_COLOR_NORMAL(COLOR_GREEN)
-#define LOG_COLOR_DEBG LOG_COLOR_NORMAL(COLOR_CYAN)
-#define LOG_COLOR_NOTC LOG_COLOR_NORMAL(COLOR_MAGENTA)
-
+#define C_BLACK         LOG_COLOR_NORMAL(COLOR_BLACK)
+#define C_RED           LOG_COLOR_NORMAL(COLOR_RED)
+#define C_GREEN         LOG_COLOR_NORMAL(COLOR_GREEN)
+#define C_YELLLOW       LOG_COLOR_NORMAL(COLOR_YELLOW)
+#define C_BLUE          LOG_COLOR_NORMAL(COLOR_BLUE)
+#define C_MAGENTA       LOG_COLOR_NORMAL(COLOR_MAGENTA)
+#define C_CYAN          LOG_COLOR_NORMAL(COLOR_CYAN)
+#define C_GRAY          LOG_COLOR_NORMAL(COLOR_GRAY)
+#define C_WHITE         LOG_COLOR_NORMAL(COLOR_WHITE)
+#define LOG_COLOR_ERRO  LOG_COLOR_BOLD(COLOR_RED)
+#define LOG_COLOR_WARN  LOG_COLOR_BOLD(COLOR_YELLOW)
+#define LOG_COLOR_INFO  LOG_COLOR_NORMAL(COLOR_GREEN)
+#define LOG_COLOR_DEBG  LOG_COLOR_NORMAL(COLOR_CYAN)
+#define LOG_COLOR_NOTC  LOG_COLOR_NORMAL(COLOR_MAGENTA)
 #else
 #define LOG_COLOR_ERRO
 #define LOG_COLOR_WARN
@@ -67,10 +75,10 @@
 #endif
 
 #ifdef DEBUG_ESP_PORT
-#define LOG_INFO(tag, ...) 
-#define LOG_WARN(tag, ...) 
-#define LOG_ERRO(tag, ...) 
-#define LOG_DEBG(tag, ...) 
+#define LOG_INFO(tag, ...)
+#define LOG_WARN(tag, ...)
+#define LOG_ERRO(tag, ...)
+#define LOG_DEBG(tag, ...)
 #define LOG_NOTC(tag, ...)
 #else
 #define LOG_INFO(tag, ...) log_info(tag, __VA_ARGS__)
