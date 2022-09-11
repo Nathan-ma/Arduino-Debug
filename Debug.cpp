@@ -7,8 +7,11 @@ String DebugClass::systemName = "";
 remote_log_settings_t DebugClass::Settings = {
     .print = false, .warn = false, .error = false, .detail = false};
 
-/** @brief Debug Print */
-void DebugClass::print(const char* fmt, ...) {
+/** @brief Debug Print
+ *  @param fmt printf like arguments
+ *  @returns always true
+ */
+bool DebugClass::print(const char* fmt, ...) {
   char loc_buf[64];
   char* temp = loc_buf;
   va_list arg;
@@ -19,13 +22,13 @@ void DebugClass::print(const char* fmt, ...) {
   va_end(copy);
   if (len < 0) {
     va_end(arg);
-    return;
+    return true;
   };
   if (len >= sizeof(loc_buf)) {
     temp = (char*)malloc(len + 1);
     if (temp == NULL) {
       va_end(arg);
-      return;
+      return true;
     }
     len = vsnprintf(temp, len + 1, fmt, arg);
   }
@@ -46,10 +49,14 @@ void DebugClass::print(const char* fmt, ...) {
 #endif
   if (len >= sizeof(loc_buf))
     free(temp);
+  return true;
 }
 
-/** @brief Debug Override*/
-void DebugClass::print(const __FlashStringHelper* fmt, ...) {
+/** @brief Debug Override
+ *  @param fmt Flash String helper
+ *  @returns always true
+ */
+bool DebugClass::print(const __FlashStringHelper* fmt, ...) {
   char loc_buf[64];
   char* temp = loc_buf;
   va_list arg;
@@ -60,13 +67,13 @@ void DebugClass::print(const __FlashStringHelper* fmt, ...) {
   va_end(copy);
   if (len < 0) {
     va_end(arg);
-    return;
+    return true;
   };
   if (len >= sizeof(loc_buf)) {
     temp = (char*)malloc(len + 1);
     if (temp == NULL) {
       va_end(arg);
-      return;
+      return true;
     }
     len = vsnprintf(temp, len + 1, reinterpret_cast<const char*>(fmt), arg);
   }
@@ -87,10 +94,14 @@ void DebugClass::print(const __FlashStringHelper* fmt, ...) {
 #endif
   if (len >= sizeof(loc_buf))
     free(temp);
+  return true;
 }
 
-/** @brief Error Print*/
-void DebugClass::error(const char* fmt, ...) {
+/** @brief Error Print
+ *  @param fmt printf like argument
+ *  @returns always false
+ */
+bool DebugClass::error(const char* fmt, ...) {
   char loc_buf[64];
   char* temp = loc_buf;
   va_list arg;
@@ -101,13 +112,13 @@ void DebugClass::error(const char* fmt, ...) {
   va_end(copy);
   if (len < 0) {
     va_end(arg);
-    return;
+    return false;
   };
   if (len >= sizeof(loc_buf)) {
     temp = (char*)malloc(len + 1);
     if (temp == NULL) {
       va_end(arg);
-      return;
+      return false;
     }
     len = vsnprintf(temp, len + 1, fmt, arg);
   }
@@ -128,10 +139,14 @@ void DebugClass::error(const char* fmt, ...) {
 #endif
   if (len >= sizeof(loc_buf))
     free(temp);
+  return false;
 }
 
-/** @brief Error Override*/
-void DebugClass::error(const __FlashStringHelper* fmt, ...) {
+/** @brief Error Override
+ *  @param fmt FlashStringHelper
+ *  @returns always false
+ */
+bool DebugClass::error(const __FlashStringHelper* fmt, ...) {
   char loc_buf[64];
   char* temp = loc_buf;
   va_list arg;
@@ -142,13 +157,13 @@ void DebugClass::error(const __FlashStringHelper* fmt, ...) {
   va_end(copy);
   if (len < 0) {
     va_end(arg);
-    return;
+    return false;
   };
   if (len >= sizeof(loc_buf)) {
     temp = (char*)malloc(len + 1);
     if (temp == NULL) {
       va_end(arg);
-      return;
+      return false;
     }
     len = vsnprintf(temp, len + 1, reinterpret_cast<const char*>(fmt), arg);
   }
@@ -169,6 +184,7 @@ void DebugClass::error(const __FlashStringHelper* fmt, ...) {
 #endif
   if (len >= sizeof(loc_buf))
     free(temp);
+  return false;
 }
 
 /** @brief Warn Print*/
