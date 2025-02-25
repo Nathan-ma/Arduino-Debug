@@ -18,10 +18,6 @@
 
 const int FacilityCode = 16;
 
-#ifndef PRINT_DEBUG
-#define PRINT_DEBUG false
-#endif
-
 typedef enum {
   PT_ERROR = 3,
   PT_WARNING = 4,
@@ -37,7 +33,6 @@ struct remote_log_settings_t {
 class DebugClass {
  private:
   /* Variables */
-  bool const debug = PRINT_DEBUG;
   char const* TAG;
   static const char* address;
   static uint32_t port;
