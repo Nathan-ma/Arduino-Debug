@@ -1,4 +1,4 @@
-#include "Debug.h"
+#include "DebugMock.h"
 
 const char *DebugClass::address = "";
 uint32_t DebugClass::port = 0;
